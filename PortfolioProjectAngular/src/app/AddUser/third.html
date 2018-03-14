@@ -1,0 +1,11 @@
+<my-links></my-links>
+<div class="form-group">
+        User Name: <input class="form-control" type="text" [(ngModel)]="userName"><br>
+        Password: <input class="form-control" type="text" [(ngModel)]="password"><br>
+        ConfirmPassword: <input class="form-control" type="text" [(ngModel)]="confirmPassword"><br>
+        FirstName: <input class="form-control" type="text" [(ngModel)]="firstName"><br>
+        LastName: <input class="form-control" type="text" [(ngModel)]="lastName" ><br>
+</div>
+
+
+<input type="submit" class="btn btn-success" (click)="register(userName, password, confirmPassword, firstName, lastName)">

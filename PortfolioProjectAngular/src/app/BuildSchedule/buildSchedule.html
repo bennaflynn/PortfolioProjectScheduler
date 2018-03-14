@@ -1,0 +1,28 @@
+<my-links></my-links>
+<!-- <form (ngSubmit)="submitForm(); scheduleForm.reset()"  #scheduleForm="ngForm"> -->
+    <div class="form-group col-lg-6">
+            <label for="weekSelect">Select Week</label>
+            <select class="form-control" name="weekSelect" id="weekSelect" #weekSelect>
+               
+                <option *ngFor="let option of week" [value]="option.week">{{option.display}}</option>
+                
+            </select>
+    </div>
+    <div class="form-group col-lg-6">
+        <label for="daySelect">Select Day</label>
+        <select class="form-control" name="daySelect" id="daySelect" #daySelect >
+        <option *ngFor="let day of dayOfWeek" [value]="day.day" >{{day.day}}</option>
+        </select>
+    </div>
+    
+    <br> 
+    <table>
+        <tr class="" *ngFor="let emp of empData; let i = index">
+            <td>{{emp.fname}} </td>
+            <td>{{emp.lname}} </td> 
+            <td><input type="text" placeholder="startTime" [(ngModel)]="emp.startTime"></td>
+        </tr>
+    </table>
+
+    <button type="submit" class="btn btn-success" (click)="submitArray(daySelect.value,weekSelect.value)">Submit</button>
+<!-- </form> -->

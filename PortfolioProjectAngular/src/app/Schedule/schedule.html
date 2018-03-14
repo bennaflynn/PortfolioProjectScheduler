@@ -1,0 +1,26 @@
+<my-links></my-links>
+<h1>Schedule!</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-2"   *ngFor="let day of allDays">
+            <span *ngFor="let d of day; let i = index;">
+                <h3 *ngIf="i == 1">{{d.day}}</h3>
+            </span>
+            <table class="table table-hover">
+                <thead>
+                    <th>Employee</th>
+                    <th>Start Time</th>
+                </thead>
+                
+                <tr *ngFor="let shift of day">
+                    <td style="border:1px solid black">{{shift.firstname}} {{shift.lastname}}</td>
+                    <td style="border:1px solid black">{{shift.startTime}}</td>
+                </tr>
+            
+                
+            </table>
+        </div>
+    </div>
+        
+</div>

@@ -1,0 +1,20 @@
+<!-- login -->
+<label>User Name:</label> <input class="form-control" type='text' [(ngModel)]="userName"><br>
+<label>Password:</label> <input class="form-control" type="text" [(ngModel)]="password"><br>
+<button type="submit" class="btn btn-success" (click)="login(userName,password)">Login</button>
+
+<!-- this only shows if login is successful -->
+{{token}}
+<br><br>
+
+<!-- Request Private data. Token is required
+Get Private Data:
+<input type="submit" (click)="getPrivateData()"><br>
+<div *ngFor="let item of privateData">
+  {{item.email}}
+</div>
+<br><br>
+
+<input type="submit" (click)="logout()" value="Log out">
+<br><br>
+{{message}} -->
