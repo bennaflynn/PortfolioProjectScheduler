@@ -68,7 +68,12 @@ export class MyRemoteLoginService {
     //POST - Register
     postRegister(feedback:Object): Observable<Comment[]> {
         let headers = new Headers({'Content-Type':'application/json'});
-        let options = new RequestOptions({headers:headers});
+        //let options = new RequestOptions({headers:headers});
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
         let url = this.site+"register";
         let RegisterModel = {
             "Email":feedback['username'],

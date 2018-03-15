@@ -74,7 +74,6 @@ namespace Portfolio_Project.Controllers
         //this will only be grabbed from authenticated users, notice the authentication scheme
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        //[Authorize(Roles = "Manager")]
         public IEnumerable<LoginViewModel> GetPrivateData()
         {
             return GetFakeData();
@@ -97,10 +96,16 @@ namespace Portfolio_Project.Controllers
         //The manager will be the only one able to register users as it is equivalent to hiring a new employee
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        //[Authorize(Roles = "Manager")]
         public async Task<object> Register([FromBody] RegisterEmployeeVM model)
         {
-            var user = new ApplicationUser
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (!PatManagerVerify.CheckIfManager(token, context))
+            {
+                //if the user isn't a manager then quit the method. Only managers are able to hire new people
+                return null;
+            }
+
+                var user = new ApplicationUser
             {
                 UserName = model.Email,
                 Email = model.Email
@@ -130,8 +135,15 @@ namespace Portfolio_Project.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public void PostSchedule([FromBody] List<EmployeeShiftVM> shifts)
         {
-            ScheduleRepo sRepo = new ScheduleRepo(context);
-            sRepo.AddScheduleItems(shifts);
+            // For more detail and better encapsulation (in a service see day 6 OnAuthorization())
+            //This is our check to determine whether or not our user is a manager or not
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if(PatManagerVerify.CheckIfManager(token, context))
+            {
+                ScheduleRepo sRepo = new ScheduleRepo(context);
+                sRepo.AddScheduleItems(shifts);
+            }
+
         }
 
         //generates a JWT token based upon our specifications in the appsettings.json
@@ -173,7 +185,6 @@ namespace Portfolio_Project.Controllers
         // held in the employee list it makes sense not toi be able to let anyone access this
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        //[Authorize(Roles = "Manager")]
         public async Task<List<UserVM>> GetAllUsers()
         {
             UserRepo repo = new UserRepo(context, service);
@@ -236,6 +247,25 @@ namespace Portfolio_Project.Controllers
             [Required]
             [StringLength(100,ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
+        }
+
+        public static class PatManagerVerify
+        {
+            public static bool CheckIfManager(string token, ApplicationDbContext context)
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var tokenStr = handler.ReadJwtToken(token) as JwtSecurityToken;
+                var userName = tokenStr.Claims.First(claim => claim.Type == "sub").Value;
+                var userId = context.Users.Where(u => u.Email == userName).FirstOrDefault();
+                var role = context.UserRoles.Where(r => r.UserId == userId.Id).FirstOrDefault();
+                if(role.RoleId == "Manager")
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

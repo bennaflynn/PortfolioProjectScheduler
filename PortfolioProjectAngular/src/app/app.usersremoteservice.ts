@@ -44,7 +44,12 @@ export class MyRemoteUserService {
     //POST - SCHEDULE
     postSchedule(feedback:Object): Observable<Comment[]> {
         let headers = new Headers({'Content-Type':'application/json'});
-        let options = new RequestOptions({headers:headers});
+        //let options = new RequestOptions({headers:headers});
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
         let url = this.site+"postschedule";
 
         return this.http.post(url,feedback,options)
