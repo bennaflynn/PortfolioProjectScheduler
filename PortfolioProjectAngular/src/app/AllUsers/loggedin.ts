@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {MyRemoteUserService} from '../app.usersremoteservice';
+import {Router} from '@angular/router';
 @Component({
     templateUrl: 'loggedIn.html'
 })
@@ -7,7 +8,11 @@ export class AllUsersComponent {
     userService: MyRemoteUserService;
     users: any;
 
-    constructor(private _userService: MyRemoteUserService){
+    constructor(private router: Router, private _userService: MyRemoteUserService){
+         //get them out of here if they are not a manager
+        if(sessionStorage.getItem('user_role') != "Manager") {
+            this.router.navigate(['schedule']);
+        }
         this.userService = _userService;
         this.getAllUsers();
     }

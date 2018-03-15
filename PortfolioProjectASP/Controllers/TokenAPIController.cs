@@ -74,7 +74,7 @@ namespace Portfolio_Project.Controllers
         //this will only be grabbed from authenticated users, notice the authentication scheme
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize(Policy = "OnlyManager")]
+        //[Authorize(Roles = "Manager")]
         public IEnumerable<LoginViewModel> GetPrivateData()
         {
             return GetFakeData();
@@ -93,8 +93,11 @@ namespace Portfolio_Project.Controllers
             }
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
         }
-        //now lets register users with the new framework
+        //now lets register users with the new framework. The users will never register themselves
+        //The manager will be the only one able to register users as it is equivalent to hiring a new employee
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(Roles = "Manager")]
         public async Task<object> Register([FromBody] RegisterEmployeeVM model)
         {
             var user = new ApplicationUser
@@ -120,9 +123,11 @@ namespace Portfolio_Project.Controllers
             }
             throw new ApplicationException("UNKNOWN_ERROR");
         }
-        //this is the task that collects the POSTED schedule and adds it to the database
+        //this is the task that collects the POSTED schedule and adds it to the database. Only 
+        // the manager will be able to post a schedule
         //POST - Schedule
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public void PostSchedule([FromBody] List<EmployeeShiftVM> shifts)
         {
             ScheduleRepo sRepo = new ScheduleRepo(context);
@@ -164,7 +169,11 @@ namespace Portfolio_Project.Controllers
         }
 
         //this function is going to return a user vm model for each of the users in the database
+        //not neccessary for the roles here but since it is possible for sensitive data to be
+        // held in the employee list it makes sense not toi be able to let anyone access this
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(Roles = "Manager")]
         public async Task<List<UserVM>> GetAllUsers()
         {
             UserRepo repo = new UserRepo(context, service);
@@ -172,13 +181,18 @@ namespace Portfolio_Project.Controllers
             return users;
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(Roles = "Manager")]
         public async Task<List<EmployeeVM>> GetAllEmployees()
         {
             UserRepo repo = new UserRepo(context, service);
             List<EmployeeVM> employees = await repo.GetAllEmployeesAsync();
             return employees;
         }
+        //As the employees will obviously need to see their shifts. This has only the authentication of
+        // needing the bearer token. So any authorized user will be able to access this
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public List<DisplayShiftVM> GetAllShifts()
         {
             UserRepo uRepo = new UserRepo(context, service);

@@ -13,6 +13,7 @@ import {BuildScheduleComponent} from './BuildSchedule/buildSchedule';
 import {ScheduleComponent} from './Schedule/app.schedule';
 
 
+
 @NgModule({
   declarations: [
     AppComponent, PageDefault, AddUserComponent, AllUsersComponent, LoginComponent, MyLinksComponent, BuildScheduleComponent, ScheduleComponent

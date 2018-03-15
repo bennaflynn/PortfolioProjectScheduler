@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {MyRemoteUserService} from '../app.usersremoteservice';
+import {Router} from '@angular/router';
 
 class EmployeeData {
     id: string;
@@ -30,7 +31,11 @@ export class BuildScheduleComponent {
 
     test: EmployeeData;
 
-    constructor(private _userservice: MyRemoteUserService) {
+    constructor(private router: Router,private _userservice: MyRemoteUserService) {
+        //get them out of here if they are not a manager
+        if(sessionStorage.getItem('user_role') != "Manager") {
+            this.router.navigate(['schedule']);
+        }
         this.userService = _userservice;
         this.getAllEmployees();
         //the two weeks that the manager can book the schedule

@@ -8,6 +8,8 @@ import {LoginComponent}     from './Login/app.login';
 import {BuildScheduleComponent} from './BuildSchedule/buildSchedule';
 import {ScheduleComponent} from './Schedule/app.schedule';
 
+
+
 const appRoutes: Routes = [
   { path: 'page-a', component: AddUserComponent },
   { path: 'page-b', component: AllUsersComponent },

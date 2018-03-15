@@ -66,7 +66,7 @@ import {Router} from '@angular/router';
           console.log(data);
           
           setTimeout(()=> {          
-            this.router.navigate(['page-b']);
+            this.router.navigate(['schedule']);
           },500);
           
         },
