@@ -57,6 +57,22 @@ export class MyRemoteUserService {
             .catch(this.handleError)
     }
 
+    //POST - Get Schedule by week
+    getScheduleByWeek(feedback:Object): Observable<Comment[]> {
+        let headers = new Headers({'Content-Type':'application/json'});
+        //let options = new RequestOptions({headers:headers});
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let url = this.site+"getShiftsForWeek";
+
+        return this.http.post(url,feedback,options)
+            .map(this.extractData)
+            .catch(this.handleError)
+    }
+
     //GET - SCHEDULE
     getSchedule(): Observable<Comment[]> {
         let headers = new Headers({ 'Content-Type': 'application/json' });

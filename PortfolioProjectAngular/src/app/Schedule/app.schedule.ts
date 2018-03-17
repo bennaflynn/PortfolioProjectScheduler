@@ -26,11 +26,11 @@ export class ScheduleComponent {
     sunday:Array<Day>;
 
 
-    allDays: Array<Array<Day>>;
-    newDays: Array<Array<Day>>;
-
-    week1:Array<Array<Day>>;
-    week2:Array<Array<Day>>;
+    //allDays: Array<Array<Day>>;
+    
+    sweek1: Array<Array<Day>>;
+    sweek2: Array<Array<Day>>;
+   
 
     constructor(remoteUserService: MyRemoteUserService) {
         this.remoteUserService = remoteUserService;
@@ -44,24 +44,43 @@ export class ScheduleComponent {
         this.sunday = [];
   
         this.allDays = [[]];
-        this.newDays = [[]];
-
-        this.week1 = [];
-        this.week2 = [];
-
-        this.getSchedule();
+        
+        this.sweek1 = [[]];
+        this.sweek2 = [[]];
+        
+        //this.getSchedule();
+        this.getScheduleByWeek(1);
+        
+        this.getScheduleByWeek(2);
         setTimeout(()=> {
-            this.buildDays();
+            
             
 
             setTimeout(() => {
-                //this.separateDays();
-                console.log(this.week2);
-                console.log(this.week1);
-                console.log(this.allDays);
+                console.log(this.sweek1);
+                console.log(this.sweek2);
+                
             },1000);
         },2000);
         
+        
+    }
+
+    getScheduleByWeek(week) {
+        this.remoteUserService.getScheduleByWeek(week) 
+            .subscribe(
+                data => {
+                    if(week == 1) {
+                        this.buildWeeks(data,this.sweek1);
+                    } else {
+                        this.buildWeeks(data,this.sweek2);
+                    }
+                    
+                },
+                error => {
+                    alert(error);
+                }
+            )
     }
 
     getSchedule() {
@@ -111,6 +130,51 @@ export class ScheduleComponent {
         this.allDays.push(this.friday);
         this.allDays.push(this.saturday);
         this.allDays.push(this.sunday);
+    }
+
+    buildWeeks(data, schedule) {
+
+        this.monday = [];
+        this.tuesday = [];
+        this.wednesday = [];
+        this.thursday = [];
+        this.friday = [];
+        this.saturday = [];
+        this.sunday = [];
+
+        data.forEach(element => {
+            switch(element.day) {
+                case "Monday":
+                    this.monday.push(element);
+                    break;
+                case "Tuesday":
+                    this.tuesday.push(element);
+                    break;
+                case "Wednesday":
+                    this.wednesday.push(element);
+                    break;
+                case "Thursday":
+                    this.thursday.push(element);
+                    break;
+                case "Friday":
+                    this.friday.push(element);
+                    break;
+                case "Saturday":
+                    this.saturday.push(element);
+                    break;
+                case "Sunday":
+                    this.sunday.push(element);
+                    break;
+            }
+        });
+
+        schedule.push(this.monday);
+        schedule.push(this.tuesday);
+        schedule.push(this.wednesday);
+        schedule.push(this.thursday);
+        schedule.push(this.friday);
+        schedule.push(this.saturday);
+        schedule.push(this.sunday);
     }
 
     // separateDays() {

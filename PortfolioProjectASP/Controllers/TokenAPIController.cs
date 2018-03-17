@@ -233,6 +233,40 @@ namespace Portfolio_Project.Controllers
             
         }
 
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public List<DisplayShiftVM> GetShiftsForWeek([FromBody] int week)
+        {
+            UserRepo uRepo = new UserRepo(context, service);
+
+            List<DisplayShiftVM> schedule = new List<DisplayShiftVM>();
+
+            var shifts = context.Schedule;
+            if (shifts.Count() != 0)
+            {
+                foreach (var shift in shifts)
+                {
+                    if(shift.Week == week)
+                    {
+                        EmployeeVM employee = uRepo.GetEmployeeDetails(shift.EmpId);
+                        DisplayShiftVM displayShift = new DisplayShiftVM
+                        {
+                            Firstname = employee.Firstname,
+                            Lastname = employee.Lastname,
+                            Week = shift.Week,
+                            Day = shift.Day,
+                            StartTime = shift.StartTime.ToString()
+                        };
+                        schedule.Add(displayShift);
+                    }
+                    
+                }
+            }
+
+
+            return schedule;
+        }
+
         public class LoginVM
         {
             [Required]
