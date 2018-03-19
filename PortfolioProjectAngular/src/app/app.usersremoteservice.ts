@@ -67,8 +67,27 @@ export class MyRemoteUserService {
                 headers: headers
             });
         let url = this.site+"getShiftsForWeek";
-
+       
         return this.http.post(url,feedback,options)
+            .map(this.extractData)
+            .catch(this.handleError)
+    }
+
+    //POST - Delete
+    deleteShift(feedback:String): Observable<Comment[]> {
+        let shift = JSON.stringify({"ShiftId" : feedback})
+        let headers = new Headers({'Content-Type':'application/json'});
+        //let options = new RequestOptions({headers:headers});
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        // let shiftVM = {
+        //     "shiftId": feedback
+        // }
+        let url = this.site+"deleteShift";
+        return this.http.post(url,shift,options)
             .map(this.extractData)
             .catch(this.handleError)
     }

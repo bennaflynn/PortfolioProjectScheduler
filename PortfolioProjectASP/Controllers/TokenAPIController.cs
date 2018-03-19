@@ -218,6 +218,7 @@ namespace Portfolio_Project.Controllers
                     EmployeeVM employee = uRepo.GetEmployeeDetails(shift.EmpId);
                     DisplayShiftVM displayShift = new DisplayShiftVM
                     {
+                        ShiftId = shift.ShiftId,
                         Firstname = employee.Firstname,
                         Lastname = employee.Lastname,
                         Week = shift.Week,
@@ -251,6 +252,7 @@ namespace Portfolio_Project.Controllers
                         EmployeeVM employee = uRepo.GetEmployeeDetails(shift.EmpId);
                         DisplayShiftVM displayShift = new DisplayShiftVM
                         {
+                            ShiftId = shift.ShiftId,
                             Firstname = employee.Firstname,
                             Lastname = employee.Lastname,
                             Week = shift.Week,
@@ -265,6 +267,21 @@ namespace Portfolio_Project.Controllers
 
 
             return schedule;
+        }
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public void DeleteShift([FromBody]ShiftIdVM shiftId)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (!PatManagerVerify.CheckIfManager(token, context))
+            {
+                //if the user isn't a manager then quit the method. Only managers are able to hire new people
+                return;
+            }
+            //var query = context.Schedule.Where(s => s.ShiftId == shiftId.shiftId).FirstOrDefault();
+            var query = (from s in context.Schedule where s.ShiftId == shiftId.ShiftId select s).First();
+            context.Schedule.Remove(query);
+            context.SaveChanges();
         }
 
         public class LoginVM

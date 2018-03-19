@@ -15,8 +15,13 @@
                         </thead>
                         
                         <tr *ngFor="let shift of day">
-                            <td style="border:1px solid black">{{shift.firstname}} {{shift.lastname}}</td>
+                            <td style="border:1px solid black">{{shift.firstname}} {{shift.lastname}}
+                                <span *ngIf="isManager">
+                                    <a class="text-danger"  (click)="deleteShift(shift.shiftId)">Delete</a>
+                                </span>
+                            </td>
                             <td style="border:1px solid black">{{shift.startTime}}</td>
+                            
                         </tr>
                     
                         
@@ -36,8 +41,13 @@
                         </thead>
                         
                         <tr *ngFor="let shift of day">
-                            <td style="border:1px solid black">{{shift.firstname}} {{shift.lastname}}</td>
+                            <td style="border:1px solid black">{{shift.firstname}} {{shift.lastname}}
+                                <span *ngIf="isManager">
+                                    <a class="text-danger"  (click)="deleteShift(shift.shiftId)">Delete</a>
+                                </span>
+                            </td>
                             <td style="border:1px solid black">{{shift.startTime}}</td>
+                            
                         </tr>
                     
                         

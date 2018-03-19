@@ -25,8 +25,7 @@ export class ScheduleComponent {
     saturday:Array<Day>;
     sunday:Array<Day>;
 
-
-    //allDays: Array<Array<Day>>;
+    isManager = false;
     
     sweek1: Array<Array<Day>>;
     sweek2: Array<Array<Day>>;
@@ -42,8 +41,10 @@ export class ScheduleComponent {
         this.friday = [];
         this.saturday = [];
         this.sunday = [];
-  
-        this.allDays = [[]];
+        
+        if(sessionStorage.getItem("user_role") == "Manager") {
+            this.isManager = true;
+        }
         
         this.sweek1 = [[]];
         this.sweek2 = [[]];
@@ -52,16 +53,7 @@ export class ScheduleComponent {
         this.getScheduleByWeek(1);
         
         this.getScheduleByWeek(2);
-        setTimeout(()=> {
-            
-            
-
-            setTimeout(() => {
-                console.log(this.sweek1);
-                console.log(this.sweek2);
-                
-            },1000);
-        },2000);
+        
         
         
     }
@@ -96,41 +88,20 @@ export class ScheduleComponent {
             )
     }
 
-    buildDays() {
-        this.schedule.forEach(element => {
-            switch(element.day) {
-                case "Monday":
-                    this.monday.push(element);
-                    break;
-                case "Tuesday":
-                    this.tuesday.push(element);
-                    break;
-                case "Wednesday":
-                    this.wednesday.push(element);
-                    break;
-                case "Thursday":
-                    this.thursday.push(element);
-                    break;
-                case "Friday":
-                    this.friday.push(element);
-                    break;
-                case "Saturday":
-                    this.saturday.push(element);
-                    break;
-                case "Sunday":
-                    this.sunday.push(element);
-                    break;
-            }
-        });
-
-        this.allDays.push(this.monday);
-        this.allDays.push(this.tuesday);
-        this.allDays.push(this.wednesday);
-        this.allDays.push(this.thursday);
-        this.allDays.push(this.friday);
-        this.allDays.push(this.saturday);
-        this.allDays.push(this.sunday);
+    deleteShift(shiftId) {
+        console.log(shiftId);
+        // let jsonShift = JSON.stringify(shiftId);
+        this.remoteUserService.deleteShift(shiftId)
+            .subscribe(
+                data => {
+                    
+                },
+                error => {
+                   
+                }
+            )
     }
+
 
     buildWeeks(data, schedule) {
 
@@ -175,20 +146,8 @@ export class ScheduleComponent {
         schedule.push(this.friday);
         schedule.push(this.saturday);
         schedule.push(this.sunday);
+
+        console.log(schedule);
     }
 
-    // separateDays() {
-    //     this.allDays.forEach(element => {
-    //         for(let i = 0; i < element.length; i++) {
-    //             if(element[i].week == "1") {
-    //                 this.week1.push(element[i]);
-    //             } else {
-    //                 this.week2.push(element[i]);
-    //             }
-    //         }
-    //     });
-    //     this.newDays.push(this.week1);
-
-    // }
-    
 }

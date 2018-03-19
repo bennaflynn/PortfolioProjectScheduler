@@ -7,6 +7,7 @@ namespace Portfolio_Project.Models
 {
     public class DisplayShiftVM
     {
+        public string ShiftId { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public int Week { get; set; }
