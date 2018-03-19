@@ -18,14 +18,25 @@ namespace Portfolio_Project.Repos
             this.context = context;
             this.service = service;
         }
+        public void DeleteUser(string Email)
+        {
+            var user = context.Users.Where(u => u.Email == Email).FirstOrDefault();
+            var userDetails = context.UserDetails.Where(d => d.EmpId == user.Id).FirstOrDefault();
+            context.UserDetails.Remove(userDetails);
+            context.Users.Remove(user);
+            context.SaveChanges();
+
+        }
 
         public bool AddUserDetails(string Id, string firstname, string lastname)
         {
+            var user = context.Users.Where(u => u.Id == Id).FirstOrDefault();
             context.UserDetails.Add(new UserDetails
             {
                 EmpId = Id,
                 Firstname = firstname,
-                Lastname = lastname
+                Lastname = lastname,
+                User = user
             });
             context.SaveChanges();
             return true;

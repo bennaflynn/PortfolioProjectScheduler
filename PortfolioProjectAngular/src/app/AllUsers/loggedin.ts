@@ -28,4 +28,19 @@ export class AllUsersComponent {
         )
     }
 
+    deleteUser(userEmail) {
+        let feedbackObject = {
+            "email":userEmail
+        }
+        this._userService.deleteUser(feedbackObject)
+            .subscribe(
+                data => {
+
+                },
+                error => {
+
+                }
+            )
+    }
+
 }

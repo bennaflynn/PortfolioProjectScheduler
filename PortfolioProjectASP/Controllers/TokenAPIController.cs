@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Portfolio_Project.Repos;
 using Portfolio_Project.Data;
+using Portfolio_Project.Services;
 
 namespace Portfolio_Project.Controllers
 {
@@ -30,6 +31,7 @@ namespace Portfolio_Project.Controllers
         private readonly IConfiguration configuration;
         private ApplicationDbContext context;
         private IServiceProvider service;
+        private IConfiguration Configuration { get; set; }
 
         //constructor 
         public TokenAPI(
@@ -37,13 +39,15 @@ namespace Portfolio_Project.Controllers
             SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration,
             ApplicationDbContext context,
-            IServiceProvider service)
+            IServiceProvider service,
+            IConfiguration config)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.configuration = configuration;
             this.context = context;
             this.service = service;
+            Configuration = config;
         }
 
         //generates a fake collection for demo purposes
@@ -128,6 +132,21 @@ namespace Portfolio_Project.Controllers
             }
             throw new ApplicationException("UNKNOWN_ERROR");
         }
+
+        //Delete the User
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public void DeleteUser([FromBody] EmployeeIdVM employee)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (PatManagerVerify.CheckIfManager(token, context))
+            {
+                UserRepo repo = new UserRepo(context, service);
+                repo.DeleteUser(employee.Email);
+            }
+            
+        }
+
         //this is the task that collects the POSTED schedule and adds it to the database. Only 
         // the manager will be able to post a schedule
         //POST - Schedule
@@ -233,6 +252,22 @@ namespace Portfolio_Project.Controllers
             return schedule;
             
         }
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public void SendScheduleByEmail()
+        {
+            UserRepo userRepo = new UserRepo(context, service);
+            var users = context.UserDetails;
+            foreach(var u in users)
+            {
+                var userRole = context.UserRoles.Where(r => r.UserId == u.EmpId).FirstOrDefault();
+                if(userRole.RoleId != "Manager")
+                {
+                    SchedulerEmailSender.SendSchedule(configuration, u.User.Email);
+                }
+            }
+            
+        }
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -272,6 +307,7 @@ namespace Portfolio_Project.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public void DeleteShift([FromBody]ShiftIdVM shiftId)
         {
+           
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             if (!PatManagerVerify.CheckIfManager(token, context))
             {

@@ -12,6 +12,7 @@ namespace Portfolio_Project.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -33,7 +34,7 @@ namespace Portfolio_Project.Data
                 .HasOne(u => u.UserDetails)
                 .WithMany(s => s.Schedules)
                 .HasForeignKey(fk => fk.EmpId)
-                .OnDelete(DeleteBehavior.Restrict);
+                ;
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.

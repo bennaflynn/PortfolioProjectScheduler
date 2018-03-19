@@ -120,6 +120,17 @@ export class BuildScheduleComponent {
         this.postSchedule(obj); 
     }
 
+    emailSchedule() {
+        this.userService.emailEmployees()
+            .subscribe( 
+                data => {
+
+                },
+                error => {
+                    
+                }
+            )
+    }
     postSchedule(empDataArray) {
         this.userService.postSchedule(empDataArray)
             .subscribe( 

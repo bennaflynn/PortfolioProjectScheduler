@@ -140,6 +140,36 @@ export class MyRemoteUserService {
             .catch(this.handleError);
     }
 
+    //GET - Email the schedule out to employees
+    emailEmployees():Observable<Comment[]> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let dataUrl = this.site + "sendschedulebyemail";
+        return this.http.get(dataUrl,options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    //Delete the user
+    deleteUser(feedback:Object):Observable<Comment[]> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let employeeVM = {
+            "Email":feedback["email"]
+        }
+        let dataUrl = this.site + "deleteUser";
+        return this.http.post(dataUrl,employeeVM,options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     
 
      //retrieval of JSON from .net succeeds!
