@@ -117,6 +117,24 @@ export class ScheduleComponent {
                 }
             )
     }
+    confirmDelete() {
+        if(confirm("Are you sure you want to delete all shifts?")) {
+            this.deleteAllShifts();
+            alert("Shifts deleted");
+        }
+    }
+    deleteAllShifts() {
+        this.remoteUserService.deleteAllShifts() 
+            .subscribe(
+                data => {
+                    alert("Data deleted");
+                }, error => {
+
+                }
+            )
+    }
+
+    
 
 
     buildWeeks(data, schedule) {

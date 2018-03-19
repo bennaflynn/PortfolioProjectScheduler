@@ -300,6 +300,23 @@ namespace Portfolio_Project.Controllers
             }
             context.SaveChanges();
         }
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public void DeleteAllShifts()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (!PatManagerVerify.CheckIfManager(token, context))
+            {
+                //if the user isn't a manager then quit the method. 
+                return;
+            }
+            var query = context.Schedule;
+            foreach(var q in query)
+            {
+                context.Schedule.Remove(q);
+            }
+            context.SaveChanges();
+        }
 
         public class LoginVM
         {

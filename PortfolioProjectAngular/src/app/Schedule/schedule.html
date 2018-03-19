@@ -1,6 +1,9 @@
 <my-links></my-links>
 <h1>Schedule!</h1>
-
+<span *ngIf="isManager">
+        <a class="text-danger"  (click)="confirmDelete()">Delete all Shifts</a>
+        <br><br>
+</span>
 <div class="container">
     <div class="row">
         <div class="col-xl-2"   *ngFor="let day of sweek1; let j = index;">
