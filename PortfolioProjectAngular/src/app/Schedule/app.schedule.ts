@@ -101,6 +101,22 @@ export class ScheduleComponent {
                 }
             )
     }
+    deleteShiftDay(week, day) {
+        let feedbackObject = {
+            "week": week,
+            
+            "day": day
+        }
+        this.remoteUserService.deleteScheduleDay(feedbackObject)
+            .subscribe(
+                data => {
+                    alert("Shifts for day deleted")
+                },
+                error => {
+
+                }
+            )
+    }
 
 
     buildWeeks(data, schedule) {

@@ -6,7 +6,13 @@
         <div class="col-xl-2"   *ngFor="let day of sweek1; let j = index;">
             <span *ngIf="j != 0">
                     <span *ngFor="let d of day; let i = index;">
-                            <h3 *ngIf="i == 1">{{d.day}}</h3>
+                        <span *ngIf="i == 1">
+                                <h3 *ngIf="i == 1">{{d.day}}</h3>
+                                <span *ngIf="isManager">
+                                    <a class="text-danger"  (click)="deleteShiftDay(d.week, d.day)">Delete Shifts For Day</a>
+                                </span>
+                        </span>    
+                        
                     </span>
                     <table class="table table-hover">
                         <thead>

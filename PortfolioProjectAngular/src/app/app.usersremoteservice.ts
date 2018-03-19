@@ -92,6 +92,25 @@ export class MyRemoteUserService {
             .catch(this.handleError)
     }
 
+    //POST - Delete Schedule by day
+    deleteScheduleDay(feedback: Object): Observable<Comment[]> {
+        let headers = new Headers({'Content-Type':'application/json'});
+        //let options = new RequestOptions({headers:headers});
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let url = this.site+"deleteShiftDay";
+        let shiftDay = {
+            "Week":feedback['week'],
+            "Day":feedback['day']
+        }
+        return this.http.post(url, shiftDay, options)
+            .map(this.extractData)
+            .catch(this.handleError)
+    }
+
     //GET - SCHEDULE
     getSchedule(): Observable<Comment[]> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -105,6 +124,8 @@ export class MyRemoteUserService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    
 
      //retrieval of JSON from .net succeeds!
     private extractData(res:Response) {

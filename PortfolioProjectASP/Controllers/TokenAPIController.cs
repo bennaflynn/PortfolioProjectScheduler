@@ -283,6 +283,23 @@ namespace Portfolio_Project.Controllers
             context.Schedule.Remove(query);
             context.SaveChanges();
         }
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public void DeleteShiftDay([FromBody] DayShiftVM day)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (!PatManagerVerify.CheckIfManager(token, context))
+            {
+                //if the user isn't a manager then quit the method. 
+                return;
+            }
+            var query = (from s in context.Schedule where s.Week == day.Week && s.Day == day.Day select s);
+            foreach(var q in query)
+            {
+                context.Schedule.Remove(q);
+            }
+            context.SaveChanges();
+        }
 
         public class LoginVM
         {
