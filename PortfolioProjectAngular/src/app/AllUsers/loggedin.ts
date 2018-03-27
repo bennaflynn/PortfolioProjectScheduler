@@ -42,5 +42,15 @@ export class AllUsersComponent {
                 }
             )
     }
+    makeManager(userEmail) {
+        let feedbackObject = {
+            "email": userEmail
+        }
+        this._userService.makeManager(feedbackObject)
+            .subscribe(
+                data => {},
+                error => {}
+            )
+    }
 
 }

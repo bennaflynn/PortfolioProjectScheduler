@@ -170,6 +170,23 @@ export class MyRemoteUserService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    //Make the user a manager
+    makeManager(feedback:Object):Observable<Comment[]> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let employeeVM = {
+            "Email":feedback["email"]
+        }
+        let dataUrl = this.site + "makeUserManager";
+        return this.http.post(dataUrl,employeeVM,options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     
 
      //retrieval of JSON from .net succeeds!

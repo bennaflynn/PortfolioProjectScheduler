@@ -133,6 +133,17 @@ namespace Portfolio_Project.Controllers
             throw new ApplicationException("UNKNOWN_ERROR");
         }
 
+        //Make a user a manager
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public void MakeUserManager([FromBody] EmployeeIdVM employee)
+        {
+            //This method simply strips the Employee role from the user and then adds on the Manager role
+            UserRoleRepo repo = new UserRoleRepo(service);
+            repo.RemoveUserRole(employee.Email, "Employee").Wait();
+            repo.AddUserRole(employee.Email, "Manager").Wait();
+        }
+
         //Delete the User
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

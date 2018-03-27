@@ -7,6 +7,7 @@
         <th>Last Name</th>
         <th>Role</th>
         <th>Delete</th>
+        <th>Make Manager</th>
     </thead>
     <tr *ngFor="let user of users">
         <td>{{user.email}}</td>
@@ -14,5 +15,6 @@
         <td>{{user.lastName}}</td>
         <td>{{user.role}}</td>
         <td><a (click)="deleteUser(user.email)" class="text-danger">Delete User</a></td>
+        <td><a (click)="makeManager(user.email)" class="text-success">Make Manager</a></td>
     </tr>
 </table>
