@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Portfolio_Project.Repos;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio_Project.Data;
+using Microsoft.AspNetCore.Identity;
+using Portfolio_Project.Models;
 
 namespace Portfolio_Project
 {
@@ -26,9 +28,13 @@ namespace Portfolio_Project
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
+                    var usermanager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
                     //create the initial roles and add them to the database
                     RoleRepo roleRepo = new RoleRepo(context);
                     roleRepo.CreateInitialRoles();
+                    Seeder seeder = new Seeder(usermanager, context, services);
+                    seeder.SeedDataAsync().Wait();
                 } catch(Exception e)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
