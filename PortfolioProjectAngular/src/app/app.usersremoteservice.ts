@@ -140,6 +140,20 @@ export class MyRemoteUserService {
             .catch(this.handleError);
     }
 
+    //GET - Schedule for one employee
+    getScheduleByEmployee():Observable<Comment[]> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let dataUrl = this.site + "getshiftsforemployee";
+        return this.http.get(dataUrl, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     //GET - Email the schedule out to employees
     emailEmployees():Observable<Comment[]> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -148,6 +162,7 @@ export class MyRemoteUserService {
             let options = new RequestOptions({
                 headers: headers
             });
+        
         let dataUrl = this.site + "sendschedulebyemail";
         return this.http.get(dataUrl,options)
             .map(this.extractData)
@@ -220,6 +235,8 @@ export class MyRemoteUserService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+
     
 
      //retrieval of JSON from .net succeeds!

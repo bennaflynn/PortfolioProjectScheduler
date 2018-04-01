@@ -263,6 +263,21 @@ namespace Portfolio_Project.Controllers
             return schedule;
             
         }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public List<DisplayShiftVM> GetShiftsForEmployee()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenStr = handler.ReadJwtToken(token) as JwtSecurityToken;
+            var userName = tokenStr.Claims.First(claim => claim.Type == "sub").Value;
+            
+            ScheduleRepo repo = new ScheduleRepo(context);
+            List<DisplayShiftVM> shifts = repo.GetShiftsPerEmployee(userName);
+            return shifts;
+        }
+
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public void SendScheduleByEmail()

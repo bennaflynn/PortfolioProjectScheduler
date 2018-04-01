@@ -4,6 +4,29 @@
     <h3>{{first}}  {{last}}</h3>
     <h4>Email: {{email}}</h4>
     <h4>Role: {{role}}</h4>
+    
+    <hr>
+    <h4>Shifts</h4>
+    <hr>
+    <table class="table table-striped table-hover">
+        <thead >
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Day</th>
+            <th>Week</th>
+            <th>Start Time</th>
+            <th>Drop Shift</th>
+        </thead>
+        <tr *ngFor="let shifts of employeeSchedule">
+            <td>{{shifts.firstname}}</td>
+            <td>{{shifts.lastname}}</td>
+            <td>{{shifts.day}}</td>
+            <td>{{shifts.week}}</td>
+            <td>{{shifts.startTime}}</td>
+            <td><a class="text-danger">Drop</a></td>
+        </tr>
+    </table>
+
     <hr>
     <h4>Change Password?</h4>
     <hr>

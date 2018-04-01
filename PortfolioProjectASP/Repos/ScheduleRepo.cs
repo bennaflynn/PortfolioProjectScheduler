@@ -15,6 +15,44 @@ namespace Portfolio_Project.Repos
             this.context = context;
         }
 
+        public List<DisplayShiftVM> GetShiftsPerEmployee(string email)
+        {
+            List<DisplayShiftVM> theShifts = new List<DisplayShiftVM>();
+
+            //var user = context.Users.Where(u => u.Email == email).FirstOrDefault();
+            //var shifts = context.Schedule.Where(s => s.EmpId == user.Email);
+
+            var query = from u in context.Users
+                        from s in context.Schedule
+                        from ud in context.UserDetails
+                        where u.Email == email
+                        where u.Id == s.EmpId
+                        where ud.EmpId == u.Id
+                        select new
+                        {
+                            s.ShiftId,
+                            ud.Firstname,
+                            ud.Lastname,
+                            s.Day,
+                            s.Week,
+                            s.StartTime
+                        };
+
+            foreach(var shift in query)
+            {
+                DisplayShiftVM addShift = new DisplayShiftVM
+                {
+                    ShiftId = shift.ShiftId,
+                    Firstname = shift.Firstname,
+                    Lastname = shift.Lastname,
+                    Day = shift.Day,
+                    Week = shift.Week,
+                    StartTime = shift.StartTime.ToString()
+                };
+                theShifts.Add(addShift);
+            }
+            return theShifts;
+        }
         
         public void AddScheduleItems(List<EmployeeShiftVM> shifts)
         {

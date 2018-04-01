@@ -16,11 +16,14 @@ export class ProfileComponent {
     last: String;
     role: String;
 
+    employeeSchedule: any;
+
     constructor(remoteUserService: MyRemoteUserService) {
         this.userService = remoteUserService;
         //this.assignVariables();
+        this.getShiftsForEmployee();
         this.getEmployee();
-        setTimeout(()=> {this.assignVariables()},1000);
+        setTimeout(()=> {this.getEmployee(); setTimeout(()=> {this.assignVariables()},1000)},1000);
     }
 
     //get the employee
@@ -45,6 +48,19 @@ export class ProfileComponent {
         this.last = this.employee.lastName;
         this.role = this.employee.role;
 
+    }
+
+    async getShiftsForEmployee() {
+        this.userService.getScheduleByEmployee()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.employeeSchedule = data;
+                },
+                error => {
+                    alert(error);
+                }
+            )
     }
 
     changePassword(newPassword,confirmPassword, oldPassword) {
