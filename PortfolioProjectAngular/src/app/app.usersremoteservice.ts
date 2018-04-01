@@ -171,6 +171,20 @@ export class MyRemoteUserService {
             .catch(this.handleError);
     }
 
+    //POST - Get the current user
+    getEmployee():Observable<Comment[]> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let dataUrl = this.site + "GetEmployee";
+        return this.http.get(dataUrl, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     //Make the user a manager
     makeManager(feedback:Object):Observable<Comment[]> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -184,6 +198,25 @@ export class MyRemoteUserService {
         }
         let dataUrl = this.site + "makeUserManager";
         return this.http.post(dataUrl,employeeVM,options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    //Change password
+    changePassword(feedback:Object):Observable<Comment[]> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append( 'Authorization', 'Bearer ' 
+        + sessionStorage.getItem('auth_token'))
+            let options = new RequestOptions({
+                headers: headers
+            });
+        let changePassVM = {
+            "Email":feedback["email"],
+            "OldPassword":feedback["oldPassword"],
+            "NewPassword":feedback["newPassword"]
+        }
+        let dataUrl = this.site + "changepassword";
+        return this.http.post(dataUrl,changePassVM,options)
             .map(this.extractData)
             .catch(this.handleError);
     }

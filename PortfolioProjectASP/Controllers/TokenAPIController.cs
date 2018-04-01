@@ -365,6 +365,61 @@ namespace Portfolio_Project.Controllers
             context.SaveChanges();
         }
 
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public bool ChangePassword([FromBody] ChangePasswordVM theUser)
+        {
+            Task<ApplicationUser> user = userManager.FindByEmailAsync(theUser.Email);
+            if(user.Result != null)
+            {
+                if (userManager.CheckPasswordAsync(user.Result, theUser.OldPassword).Result)
+                {
+                    userManager.ChangePasswordAsync(user.Result, theUser.OldPassword, theUser.NewPassword);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public UserVM GetEmployee()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenStr = handler.ReadJwtToken(token) as JwtSecurityToken;
+            var userName = tokenStr.Claims.First(claim => claim.Type == "sub").Value;
+            var userId = context.Users.Where(i => i.UserName == userName).FirstOrDefault();
+            var user = from u in context.Users
+                       from ud in context.UserDetails
+                       from ur in context.UserRoles
+                       where u.Id == userId.Id
+                       where ud.EmpId == userId.Id
+                       where ur.UserId == userId.Id
+                       select new
+                       {
+                           u.Email,
+                           ud.Firstname,
+                           ud.Lastname,
+                           ur.RoleId
+                       };
+                       
+
+            if(user.FirstOrDefault() != null)
+            {
+                var newUser = user.FirstOrDefault();
+                UserVM employee = new UserVM
+                {
+                    Email = newUser.Email,
+                    FirstName = newUser.Firstname,
+                    LastName = newUser.Lastname,
+                    Role = newUser.RoleId
+                };
+                return employee;
+            }
+            return null;
+        }
+
         public class LoginVM
         {
             [Required]
@@ -377,7 +432,7 @@ namespace Portfolio_Project.Controllers
             [Required]
             public string Email { get; set; }
             [Required]
-            [StringLength(100,ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
         }
 

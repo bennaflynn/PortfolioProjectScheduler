@@ -11,12 +11,13 @@ import { routing }        from './app.routing';
 import { MyLinksComponent } from './mylinks';
 import {BuildScheduleComponent} from './BuildSchedule/buildSchedule';
 import {ScheduleComponent} from './Schedule/app.schedule';
+import {ProfileComponent} from './userProfile/app.profile';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent, PageDefault, AddUserComponent, AllUsersComponent, LoginComponent, MyLinksComponent, BuildScheduleComponent, ScheduleComponent
+    AppComponent, PageDefault, AddUserComponent, AllUsersComponent, LoginComponent, MyLinksComponent, BuildScheduleComponent, ScheduleComponent, ProfileComponent
   ],
   imports: [
     BrowserModule,

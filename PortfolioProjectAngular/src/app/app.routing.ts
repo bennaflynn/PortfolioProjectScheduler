@@ -7,16 +7,18 @@ import { PageDefault }           from './defaultPage/default';
 import {LoginComponent}     from './Login/app.login';
 import {BuildScheduleComponent} from './BuildSchedule/buildSchedule';
 import {ScheduleComponent} from './Schedule/app.schedule';
+import {ProfileComponent} from './userProfile/app.profile';
 
 
 
 const appRoutes: Routes = [
-  { path: 'page-a', component: AddUserComponent },
-  { path: 'page-b', component: AllUsersComponent },
-  { path: 'page-c', component: BuildScheduleComponent},
+  { path: 'addUser', component: AddUserComponent },
+  { path: 'allUsers', component: AllUsersComponent },
+  { path: 'buildSchedule', component: BuildScheduleComponent},
+  { path: 'profile', component: ProfileComponent},
   {path: 'login', component: LoginComponent},
   {path: 'schedule', component: ScheduleComponent},
-  { path: '', redirectTo: '/page-a', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: PageDefault }
 ];
 

@@ -8,9 +8,10 @@ import {Router} from '@angular/router';
             <a routerLink="/schedule"
             routerLinkActive="Active">
             Schedule |</a>
-            <a *ngIf="isManager" routerLink="/page-b" routerLinkActive="active">All Users |</a>
-            <a *ngIf="isManager" routerLink="/page-a" routerLinkActive="active">Add New User |</a>
-            <a *ngIf="isManager" routerLink="/page-c" routerLinkActive="active">Build Schedule |</a>
+            <a *ngIf="isManager" routerLink="/allUsers" routerLinkActive="active">All Users |</a>
+            <a *ngIf="isManager" routerLink="/addUser" routerLinkActive="active">Add New User |</a>
+            <a *ngIf="isManager" routerLink="/buildSchedule" routerLinkActive="active">Build Schedule |</a>
+            <a routerLink="/profile" routerLinkActive="active">Profile | </a>
         
     <input type='submit' class="btn btn-danger" (click)='logout()' value='logout'><br/>
     </div>
