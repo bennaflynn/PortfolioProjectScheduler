@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PortfolioProject.Migrations
 {
-    public partial class addColumns : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -181,9 +181,7 @@ namespace PortfolioProject.Migrations
                     EmpId = table.Column<string>(nullable: true),
                     Position = table.Column<string>(nullable: true),
                     StartTime = table.Column<TimeSpan>(nullable: false),
-                    Week = table.Column<int>(nullable: false),
-                    firstname = table.Column<string>(nullable: true),
-                    lastname = table.Column<string>(nullable: true)
+                    Week = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,6 +192,33 @@ namespace PortfolioProject.Migrations
                         principalTable: "UserDetails",
                         principalColumn: "EmpId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DroppedShifts",
+                columns: table => new
+                {
+                    ShiftId = table.Column<string>(nullable: false),
+                    Day = table.Column<string>(nullable: true),
+                    EmpId = table.Column<string>(nullable: true),
+                    StartTime = table.Column<TimeSpan>(nullable: false),
+                    Week = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DroppedShifts", x => x.ShiftId);
+                    table.ForeignKey(
+                        name: "FK_DroppedShifts_UserDetails_EmpId",
+                        column: x => x.EmpId,
+                        principalTable: "UserDetails",
+                        principalColumn: "EmpId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DroppedShifts_Schedule_ShiftId",
+                        column: x => x.ShiftId,
+                        principalTable: "Schedule",
+                        principalColumn: "ShiftId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -234,6 +259,11 @@ namespace PortfolioProject.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_DroppedShifts_EmpId",
+                table: "DroppedShifts",
+                column: "EmpId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Schedule_EmpId",
                 table: "Schedule",
                 column: "EmpId");
@@ -257,10 +287,13 @@ namespace PortfolioProject.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Schedule");
+                name: "DroppedShifts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Schedule");
 
             migrationBuilder.DropTable(
                 name: "UserDetails");

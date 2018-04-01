@@ -27,7 +27,15 @@ namespace Portfolio_Project.Data
                 .HasForeignKey<UserDetails>(fk => fk.EmpId)
                 ;
 
-           
+            builder.Entity<Schedule>()
+                 .HasOne(d => d.DroppedShift)
+                 .WithOne(ds => ds.Schedule)
+                 .HasForeignKey<DroppedShift>(fk => fk.ShiftId);
+
+            builder.Entity<DroppedShift>()
+                 .HasOne(d => d.UserDetails)
+                 .WithMany(u => u.DroppedShifts)
+                 .HasForeignKey(fk => fk.EmpId);
 
             //specify the many to one relationship with schedules to applicationuser
             builder.Entity<Schedule>()
@@ -45,6 +53,7 @@ namespace Portfolio_Project.Data
         //specify the tables
         public DbSet<UserDetails> UserDetails { get; set; }
         public DbSet<Schedule> Schedule { get; set; }
+        public DbSet<DroppedShift> DroppedShifts { get; set; }
     }
     public class UserDetails
     {
@@ -60,6 +69,8 @@ namespace Portfolio_Project.Data
 
         //refer to the child table
         public IEnumerable<Schedule> Schedules { get; set; } 
+
+        public IEnumerable<DroppedShift> DroppedShifts { get; set; }
            
     }
     public class Schedule
@@ -75,6 +86,25 @@ namespace Portfolio_Project.Data
         
 
         //refer to the parent table
+        public virtual UserDetails UserDetails { get; set; }
+
+        //refer to the 1 - 1 with droppedshift
+        public virtual DroppedShift DroppedShift { get; set; }
+
+    }
+    public class DroppedShift
+    {
+        [Key]
+        [ForeignKey("ShiftId")]
+        public string ShiftId { get; set; }
+        [ForeignKey("EmpId")]
+        public string EmpId { get; set; }
+        public string Day { get; set; }
+        public string Week { get; set; }
+        public TimeSpan StartTime { get; set; }
+
+        //refer to the parent tables (1 -1 relationship with Schedule)
+        public virtual Schedule Schedule { get; set; }
         public virtual UserDetails UserDetails { get; set; }
     }
 }

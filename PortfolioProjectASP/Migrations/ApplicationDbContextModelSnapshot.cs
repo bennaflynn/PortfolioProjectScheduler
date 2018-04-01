@@ -126,6 +126,25 @@ namespace PortfolioProject.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Portfolio_Project.Data.DroppedShift", b =>
+                {
+                    b.Property<string>("ShiftId");
+
+                    b.Property<string>("Day");
+
+                    b.Property<string>("EmpId");
+
+                    b.Property<TimeSpan>("StartTime");
+
+                    b.Property<string>("Week");
+
+                    b.HasKey("ShiftId");
+
+                    b.HasIndex("EmpId");
+
+                    b.ToTable("DroppedShifts");
+                });
+
             modelBuilder.Entity("Portfolio_Project.Data.Schedule", b =>
                 {
                     b.Property<string>("ShiftId")
@@ -253,6 +272,18 @@ namespace PortfolioProject.Migrations
                     b.HasOne("Portfolio_Project.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Portfolio_Project.Data.DroppedShift", b =>
+                {
+                    b.HasOne("Portfolio_Project.Data.UserDetails", "UserDetails")
+                        .WithMany("DroppedShifts")
+                        .HasForeignKey("EmpId");
+
+                    b.HasOne("Portfolio_Project.Data.Schedule", "Schedule")
+                        .WithOne("DroppedShift")
+                        .HasForeignKey("Portfolio_Project.Data.DroppedShift", "ShiftId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
