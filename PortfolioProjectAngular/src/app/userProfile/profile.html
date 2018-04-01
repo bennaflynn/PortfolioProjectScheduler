@@ -1,15 +1,17 @@
 <my-links></my-links>
-<h1>Welcome back</h1>
-<h3>{{first}}  {{last}}</h3>
-<h4>Email: {{email}}</h4>
-<h4>Role: {{role}}</h4>
-<hr>
-<h4>Change Password?</h4>
-<hr>
-<label for="oldpassword">Current Password:</label>
-<input type="text" name="oldpassword" class="form-control" [(ngModel)]="oldpassword" >
-<label for="password">New Password:</label>
-<input type="text" name="password" class="form-control" [(ngModel)]="newPassword"><br>
-<label for="confirmPassword">Confirm Password:</label>
-<input type="text" name="confirmPassword" class="form-control" [(ngModel)]="confirmPassword"><br>
-<button type="submit" class="btn btn-danger" (click)="changePassword(newPassword, confirmPassword, oldpassword)">Change Password</button>
+<div class="col-md-10 col-md-offset-1">
+    <h1 class="text-center">User Profile</h1>
+    <h3>{{first}}  {{last}}</h3>
+    <h4>Email: {{email}}</h4>
+    <h4>Role: {{role}}</h4>
+    <hr>
+    <h4>Change Password?</h4>
+    <hr>
+    <label for="oldpassword">Current Password:</label>
+    <input type="text" name="oldpassword" class="form-control" [(ngModel)]="oldpassword" >
+    <label for="password">New Password:</label>
+    <input type="text" name="password" class="form-control" [(ngModel)]="newPassword"><br>
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="text" name="confirmPassword" class="form-control" [(ngModel)]="confirmPassword"><br>
+    <button type="submit" class="btn btn-danger" (click)="changePassword(newPassword, confirmPassword, oldpassword)">Change Password</button>
+</div>

@@ -1,20 +1,16 @@
-<!-- login -->
-<label>User Name:</label> <input class="form-control" type='text' [(ngModel)]="userName"><br>
-<label>Password:</label> <input class="form-control" type="password" [(ngModel)]="password"><br>
-<button type="submit" class="btn btn-success" (click)="login(userName,password)">Login</button>
+<div class="col-md-10 col-md-offset-1" style="height:100vh;">
+<div class="jumbotron" style="height:100%;">
+  <h1 class="display-3">Restaurant Name</h1>
+  <p class="lead">Please sign in</p>
+  <!-- login -->
+  <label>User Name:</label> <input class="form-control" type='text' [(ngModel)]="userName"><br>
+  <label>Password:</label> <input class="form-control" type="password" [(ngModel)]="password"><br>
+  <div class="text-center">
+    <button type="submit" class="btn btn-success" (click)="login(userName,password)">Login</button>
+  </div>
+  
 
-<!-- this only shows if login is successful -->
-{{token}}
-<br><br>
 
-<!-- Request Private data. Token is required
-Get Private Data:
-<input type="submit" (click)="getPrivateData()"><br>
-<div *ngFor="let item of privateData">
-  {{item.email}}
 </div>
-<br><br>
 
-<input type="submit" (click)="logout()" value="Log out">
-<br><br>
-{{message}} -->
+</div>

@@ -4,18 +4,44 @@ import {Router} from '@angular/router';
     selector: '<my-links>',
     template: `<hr>
     
-    <div *ngIf="loggedIn">
-            <a routerLink="/schedule"
-            routerLinkActive="Active">
-            Schedule |</a>
-            <a *ngIf="isManager" routerLink="/allUsers" routerLinkActive="active">All Users |</a>
-            <a *ngIf="isManager" routerLink="/addUser" routerLinkActive="active">Add New User |</a>
-            <a *ngIf="isManager" routerLink="/buildSchedule" routerLinkActive="active">Build Schedule |</a>
-            <a routerLink="/profile" routerLinkActive="active">Profile | </a>
+    <div *ngIf="loggedIn" class="d-flex justify-content-end">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         
-    <input type='submit' class="btn btn-danger" (click)='logout()' value='logout'><br/>
+       
+        <div  id="navbarTogglerDemo02">
+                <button class="btn btn-secondary" >
+                    <a class="nav-link" routerLink="/schedule"
+                    routerLinkActive="Active">
+                    Schedule </a>
+                </button>
+                <button class="btn btn-secondary" *ngIf="isManager">
+                    <a class="nav-link text-light"  routerLink="/allUsers" routerLinkActive="active">All Users </a>
+                </button>
+                <button class="btn btn-secondary" *ngIf="isManager">
+                    <a class="nav-link"  routerLink="/addUser" routerLinkActive="active">Add New User </a>
+                </button>
+                <button class="btn btn-secondary" *ngIf="isManager">
+                    <a class="nav-link"  routerLink="/buildSchedule" routerLinkActive="active">Build Schedule </a>
+                </button>
+                <button class="btn btn-secondary">
+                    <a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
+                </button>
+                    <input class="nav-link" type='submit' class="btn btn-danger" (click)='logout()' value='logout'><br/>
+              
+        </div>
+            
+           
+            
+            
+            
+        
+    
+    </nav>
     </div>
-    <hr>`
+    <hr>
+
+  
+    `
 })
 export class MyLinksComponent { 
     loggedIn = false;
