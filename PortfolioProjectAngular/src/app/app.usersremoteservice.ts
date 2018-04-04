@@ -237,6 +237,52 @@ export class MyRemoteUserService {
     }
 
 
+    //Drop shift
+    dropShift(feedback:Object):Observable<Comment[]> {
+        let headers = new Headers({'Content-Type':'application/json'});
+        headers.append('Authorization', 'Bearer ' + sessionStorage.getItem('auth_token'))
+        let options = new RequestOptions({
+            headers:headers
+        });
+        let shiftVM = {
+            "ShiftId":feedback['shiftId']
+        }
+        let url = this.site+"dropshift";
+        return this.http.post(url,shiftVM,options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    //GET all the dropped shifts
+    getDroppedShifts():Observable<Comment[]> {
+        let headers = new Headers({'Content-Type':'application/json'});
+        headers.append('Authorization', 'Bearer ' + sessionStorage.getItem('auth_token'))
+        let options = new RequestOptions({
+            headers:headers
+        });
+        let url = this.site+"getDroppedshifts";
+        return this.http.get(url,options)
+            .map(this.extractData)
+            .catch(this.handleError); 
+    }
+
+    //POST - Pick up the shift
+    pickUpShift(feedback:Object):Observable<Comment[]> {
+        let headers = new Headers({'Content-Type':'application/json'});
+        headers.append('Authorization', 'Bearer ' + sessionStorage.getItem('auth_token'))
+        let options = new RequestOptions({
+            headers:headers
+        });
+        let shiftVM = {
+            "ShiftId":feedback['shiftId']
+        }
+        let url = this.site + "pickupshift";
+        return this.http.post(url, shiftVM,options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
     
 
      //retrieval of JSON from .net succeeds!

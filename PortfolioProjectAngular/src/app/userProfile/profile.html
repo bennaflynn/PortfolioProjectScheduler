@@ -1,31 +1,33 @@
 <my-links></my-links>
-<div class="col-md-10 col-md-offset-1">
+
     <h1 class="text-center">User Profile</h1>
     <h3>{{first}}  {{last}}</h3>
     <h4>Email: {{email}}</h4>
     <h4>Role: {{role}}</h4>
+   
+       <hr>
+        <h4>Shifts</h4>
+        <hr>
+        <table class="table table-striped table-hover">
+            <thead >
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Day</th>
+                <th>Week</th>
+                <th>Start Time</th>
+                <th>Drop Shift</th>
+            </thead>
+            <tr *ngFor="let shifts of employeeSchedule">
+                <td>{{shifts.firstname}}</td>
+                <td>{{shifts.lastname}}</td>
+                <td>{{shifts.day}}</td>
+                <td>{{shifts.week}}</td>
+                <td>{{shifts.startTime}}</td>
+                <td><a class="text-danger" (click)="dropShift(shifts.shiftId)" >Drop</a></td>
+            </tr>
+        </table> 
+  
     
-    <hr>
-    <h4>Shifts</h4>
-    <hr>
-    <table class="table table-striped table-hover">
-        <thead >
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Day</th>
-            <th>Week</th>
-            <th>Start Time</th>
-            <th>Drop Shift</th>
-        </thead>
-        <tr *ngFor="let shifts of employeeSchedule">
-            <td>{{shifts.firstname}}</td>
-            <td>{{shifts.lastname}}</td>
-            <td>{{shifts.day}}</td>
-            <td>{{shifts.week}}</td>
-            <td>{{shifts.startTime}}</td>
-            <td><a class="text-danger">Drop</a></td>
-        </tr>
-    </table>
 
     <hr>
     <h4>Change Password?</h4>
@@ -37,4 +39,4 @@
     <label for="confirmPassword">Confirm Password:</label>
     <input type="text" name="confirmPassword" class="form-control" [(ngModel)]="confirmPassword"><br>
     <button type="submit" class="btn btn-danger" (click)="changePassword(newPassword, confirmPassword, oldpassword)">Change Password</button>
-</div>
+

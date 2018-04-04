@@ -26,6 +26,7 @@ export class ProfileComponent {
         setTimeout(()=> {this.getEmployee(); setTimeout(()=> {this.assignVariables()},1000)},1000);
     }
 
+
     //get the employee
     async getEmployee() {
         this.userService.getEmployee()
@@ -56,6 +57,25 @@ export class ProfileComponent {
                 data => {
                     console.log(data);
                     this.employeeSchedule = data;
+                },
+                error => {
+                    alert(error);
+                }
+            )
+    }
+
+    dropShift(shiftId) {
+        let feedbackObject = {
+            "shiftId": shiftId
+        }
+        this.userService.dropShift(feedbackObject)
+            .subscribe(
+                data => {
+                    if(data) {
+                        alert("Shift has been dropped");
+                    } else {
+                        alert("Something went wrong on the server. The code monkeys are fixing it.")
+                    }
                 },
                 error => {
                     alert(error);

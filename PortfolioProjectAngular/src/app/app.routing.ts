@@ -8,6 +8,7 @@ import {LoginComponent}     from './Login/app.login';
 import {BuildScheduleComponent} from './BuildSchedule/buildSchedule';
 import {ScheduleComponent} from './Schedule/app.schedule';
 import {ProfileComponent} from './userProfile/app.profile';
+import {DroppedShiftsComponent} from './DroppedShifts/app.droppedShifts';
 
 
 
@@ -18,6 +19,7 @@ const appRoutes: Routes = [
   { path: 'profile', component: ProfileComponent},
   {path: 'login', component: LoginComponent},
   {path: 'schedule', component: ScheduleComponent},
+  {path: 'droppedShifts', component:DroppedShiftsComponent},
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: PageDefault }
 ];

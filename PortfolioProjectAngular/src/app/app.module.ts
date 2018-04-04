@@ -12,12 +12,13 @@ import { MyLinksComponent } from './mylinks';
 import {BuildScheduleComponent} from './BuildSchedule/buildSchedule';
 import {ScheduleComponent} from './Schedule/app.schedule';
 import {ProfileComponent} from './userProfile/app.profile';
+import {DroppedShiftsComponent} from './DroppedShifts/app.droppedShifts';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent, PageDefault, AddUserComponent, AllUsersComponent, LoginComponent, MyLinksComponent, BuildScheduleComponent, ScheduleComponent, ProfileComponent
+    AppComponent, PageDefault, AddUserComponent, AllUsersComponent, LoginComponent, MyLinksComponent, BuildScheduleComponent, ScheduleComponent, ProfileComponent, DroppedShiftsComponent
   ],
   imports: [
     BrowserModule,

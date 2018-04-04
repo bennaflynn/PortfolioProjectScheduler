@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
     selector: '<my-links>',
     template: `<hr>
     
-    <div *ngIf="loggedIn" class="d-flex justify-content-end">
+    <div *ngIf="loggedIn" class="text-right">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         
        
@@ -13,6 +13,9 @@ import {Router} from '@angular/router';
                     <a class="nav-link" routerLink="/schedule"
                     routerLinkActive="Active">
                     Schedule </a>
+                </button>
+                <button class="btn btn-secondary">
+                    <a class="nav-link" routerLink="/droppedShifts" routerLinkActive="active">Dropped Shifts</a>
                 </button>
                 <button class="btn btn-secondary" *ngIf="isManager">
                     <a class="nav-link text-light"  routerLink="/allUsers" routerLinkActive="active">All Users </a>

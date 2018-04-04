@@ -435,6 +435,116 @@ namespace Portfolio_Project.Controllers
             return null;
         }
 
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public bool DropShift([FromBody] ShiftIdVM shift)
+        {
+            var theShift = context.Schedule.Where(s => s.ShiftId == shift.ShiftId).FirstOrDefault();
+
+            if (theShift != null)
+            {
+                DroppedShift droppedShift = new DroppedShift
+                {
+                    ShiftId = theShift.ShiftId,
+                    EmpId = theShift.EmpId,
+                    Day = theShift.Day,
+                    Week = theShift.Week,
+                    StartTime = theShift.StartTime,
+                    UserDetails = theShift.UserDetails
+                };
+                context.DroppedShifts.Add(droppedShift);
+                context.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public List<DisplayShiftVM> GetDroppedShifts()
+        {
+            //var shifts = context.DroppedShifts.OrderBy(s => s.Week).ThenBy(s => s.Day);
+            var shifts = from s in context.DroppedShifts
+                         from u in context.UserDetails
+                         where s.EmpId == u.EmpId
+                         orderby s.Week, s.Day
+                         select new
+                         {
+                             ShiftId = s.ShiftId,
+                             Firstname = u.Firstname,
+                             Lastname = u.Lastname,
+                             Day = s.Day,
+                             Week = s.Week,
+                             StartTime = s.StartTime
+                         };
+
+            List < DisplayShiftVM > theShifts = new List<DisplayShiftVM>();
+
+            foreach(var shift in shifts)
+            {
+                DisplayShiftVM newShift = new DisplayShiftVM
+                {
+                    ShiftId = shift.ShiftId,
+                    Firstname = shift.Firstname,
+                    Lastname = shift.Lastname,
+                    Day = shift.Day,
+                    Week = shift.Week,
+                    StartTime = shift.StartTime.ToString()
+                };
+                theShifts.Add(newShift);
+            }
+            return theShifts;
+        }
+
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public bool PickUpShift([FromBody] ShiftIdVM shift)
+        {
+            //find out who wants to pick up the shift
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenStr = handler.ReadJwtToken(token) as JwtSecurityToken;
+            var userName = tokenStr.Claims.First(claim => claim.Type == "sub").Value;
+            var user = context.Users.Where(i => i.UserName == userName).FirstOrDefault();
+
+            //now pull up the particular shift in question
+            var theshift = context.DroppedShifts.Where(d => d.ShiftId == shift.ShiftId).FirstOrDefault();
+            if(theshift != null)
+            {
+                //if the user is the same that is trying to pick up the shift
+                if(theshift.EmpId == user.Id)
+                {
+                    return false;
+                }
+
+                //Now check all the shifts that the user has, if one of them is the same day and week as the dropped shift then throw
+                var userShifts = context.Schedule.Where(u => u.EmpId == user.Id);
+                foreach(var us in userShifts)
+                {
+                    if(us.Week == theshift.Week && us.Day == theshift.Day)
+                    {
+                        //that user already works this day so they cannot take the shift
+                        return false;
+                    }
+                }
+
+                //the two checks have been passed, now the new employee can be assigned to the shift
+                var newShift = context.Schedule.Where(s => s.ShiftId == shift.ShiftId).FirstOrDefault();
+                if(newShift != null)
+                {
+                    newShift.EmpId = user.Id;
+
+                    context.DroppedShifts.Remove(theshift);
+
+                    context.SaveChanges();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public class LoginVM
         {
             [Required]

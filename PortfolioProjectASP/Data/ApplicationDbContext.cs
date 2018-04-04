@@ -100,7 +100,7 @@ namespace Portfolio_Project.Data
         [ForeignKey("EmpId")]
         public string EmpId { get; set; }
         public string Day { get; set; }
-        public string Week { get; set; }
+        public int Week { get; set; }
         public TimeSpan StartTime { get; set; }
 
         //refer to the parent tables (1 -1 relationship with Schedule)
