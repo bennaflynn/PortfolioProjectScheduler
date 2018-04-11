@@ -283,13 +283,13 @@ namespace Portfolio_Project.Controllers
         public void SendScheduleByEmail()
         {
             UserRepo userRepo = new UserRepo(context, service);
-            var users = context.UserDetails;
+            var users = context.Users;
             foreach(var u in users)
             {
-                var userRole = context.UserRoles.Where(r => r.UserId == u.EmpId).FirstOrDefault();
+                var userRole = context.UserRoles.Where(r => r.UserId == u.Id).FirstOrDefault();
                 if(userRole.RoleId != "Manager")
                 {
-                    SchedulerEmailSender.SendSchedule(configuration, u.User.Email);
+                    SchedulerEmailSender.SendSchedule(configuration, u.Email);
                 }
             }
             

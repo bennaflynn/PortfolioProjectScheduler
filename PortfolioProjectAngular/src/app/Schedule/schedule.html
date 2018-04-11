@@ -1,6 +1,6 @@
 <my-links></my-links>
 
-<h1 class="text-center">Schedule!</h1>
+<h1 class="text-center">Schedule</h1>
 <span *ngIf="isManager">
         <a class="text-danger"  (click)="confirmDelete()">Delete all Shifts</a>
         <br><br>
@@ -19,7 +19,8 @@
                         
                     </span>
                     <table class="table table-hover">
-                        <thead>
+                        
+                        <thead *ngIf='isNotEmpty(day)'>
                             <th>Employee</th>
                             <th>Start Time</th>
                         </thead>
@@ -45,7 +46,7 @@
                             <h3 *ngIf="i == 1">{{d.day}}</h3>
                     </span>
                     <table class="table table-hover">
-                        <thead>
+                        <thead *ngIf='isNotEmpty(day)' >
                             <th>Employee</th>
                             <th>Start Time</th>
                         </thead>

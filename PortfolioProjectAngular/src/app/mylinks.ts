@@ -4,11 +4,14 @@ import {Router} from '@angular/router';
     selector: '<my-links>',
     template: `<hr>
     
-    <div *ngIf="loggedIn" class="text-right">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div *ngIf="loggedIn" class="text-right h-100">
+    <div class="row h-75 justify-content-center align-items-center">
         
        
         <div  id="navbarTogglerDemo02">
+                <div classs='w-0'>
+                    <h1 style='display:inline;float:left;font-family:Lobster;margin:0;'>EasyScheduler</h1>
+                </div>
                 <button class="btn btn-secondary" >
                     <a class="nav-link" routerLink="/schedule"
                     routerLinkActive="Active">
@@ -39,7 +42,7 @@ import {Router} from '@angular/router';
             
         
     
-    </nav>
+    </div>
     </div>
     <hr>
 

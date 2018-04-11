@@ -37,7 +37,7 @@ import {Router} from '@angular/router';
                     alert(error);
                 }
             )
-            this.router.navigate(['page-b']);
+            this.router.navigate(['allUsers']);
      }
  
  }

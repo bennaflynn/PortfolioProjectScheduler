@@ -58,6 +58,13 @@ export class ScheduleComponent {
         
     }
 
+    isNotEmpty(day:Array<Day>) {
+        if(day.length > 1) {
+            return true;
+        }
+        return false;
+    }
+
     getScheduleByWeek(week) {
         this.remoteUserService.getScheduleByWeek(week) 
             .subscribe(

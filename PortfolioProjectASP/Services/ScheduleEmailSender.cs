@@ -21,12 +21,12 @@ namespace Portfolio_Project.Services
                 mailMsg.To.Add(new MailAddress(emailTo, "To Name"));
 
                 // From
-                mailMsg.From = new MailAddress("SchedulePosted@EasyScheduler.com", "From Name");
+                mailMsg.From = new MailAddress("SchedulePosted@EasyScheduler.com", "Easy Scheduler");
 
                 // Subject and multipart/alternative Body
                 mailMsg.Subject = "New Schedule Posted";
                 string text = "Hello Restaurant Employee. A new schedule for the next two weeks has been posted and added to the EasyScheduler website";
-                string html = @"<p>A new Schedule has been posted. Check the EasySchedule Website</p>";
+                string html = @"<h1>Hey there!</h1><p>A new Schedule has been posted. <br> Check the EasySchedule <a href='localhost:4200'>Website</a>, to see your new shifts!</p> <br><p>Love, the EasyScheduler team</p>";
 
                 mailMsg.AlternateViews.Add(
                         AlternateView.CreateAlternateViewFromString(text,
