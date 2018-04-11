@@ -59,7 +59,7 @@ export class ScheduleComponent {
     }
 
     isNotEmpty(day:Array<Day>) {
-        if(day.length > 1) {
+        if(day.length > 0) {
             return true;
         }
         return false;
