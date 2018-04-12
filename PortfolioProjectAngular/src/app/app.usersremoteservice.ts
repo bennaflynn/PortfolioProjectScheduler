@@ -11,7 +11,7 @@ import 'rxjs/add/observable/throw';
 export class MyRemoteUserService {
     public site: string;
     constructor(private http: Http) {
-        this.site = "http://localhost:50005/tokenapi/"
+        this.site = "/tokenapi/"
     }
 
     getAllUsers(): Observable<Comment[]> {

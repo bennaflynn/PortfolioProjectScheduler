@@ -18,7 +18,7 @@ export class MyRemoteLoginService {
     loginModel : LoginModel;
     public site: string;
     constructor(private http: Http) {
-        this.site = "http://localhost:50005/tokenapi/"
+        this.site = "/tokenapi/"
     }
     //GET _ Private data, need to be logged in
     //token needed

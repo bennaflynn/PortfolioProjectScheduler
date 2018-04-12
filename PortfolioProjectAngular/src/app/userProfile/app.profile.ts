@@ -18,6 +18,10 @@ export class ProfileComponent {
 
     employeeSchedule: any;
 
+    oldpassword:String;
+    newPassword:String;
+    confirmPassword:String;
+
     constructor(remoteUserService: MyRemoteUserService) {
         this.userService = remoteUserService;
         //this.assignVariables();

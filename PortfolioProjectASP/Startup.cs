@@ -14,6 +14,8 @@ using Portfolio_Project.Services;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Portfolio_Project
 {
@@ -107,10 +109,41 @@ namespace Portfolio_Project
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            ////add this at the start of Configure
+            //app.Use(async (HttpContext context, Func<Task> next) =>
+            //{
+            //    await next.Invoke();
+
+            //    if (context.Response.StatusCode == 404)
+            //    {
+            //        context.Request.Path = new PathString("/index.html");
+            //        await next.Invoke();
+            //    }
+            //});
+
+            // app.UseStaticFiles();
+
+            // Place this code before app.UseMvc() inside Configure().
+            //Set up so Angular routing can take over when item not found.
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/dist/index.html";
+                    await next();
+                }
+            }).UseDefaultFiles().UseStaticFiles();
+
+            //\/ this was added 
+            //app.UseDefaultFiles();
+
+
 
             app.UseAuthentication();
             app.UseCors("AllowAll");
+
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
